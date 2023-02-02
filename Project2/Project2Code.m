@@ -48,16 +48,19 @@ exportgraphics(gcf,'New1Hist.png','Resolution',300)
 
 
 pz=@(z) pi/(2*(L-1))*sin(z*pi/(L-1)); %histogram to match
-G=zeros(1,L-1); %allocating memory
+G=zeros(1,L); %allocating memory
 for i=1:length(G)
     G(i)=pz(i-1); %creating new transfrom for matching
 end
+figure
+plot(G)
+sum(G)
 G=round(cumsum(G).*(L-1)); %finishing new tranfrom
 %transforming image to match histgram
-e=zeros(1,length(b));
-for i=1:length(b)
-    j=int8(b(i));
-    e(i)=G(j+1);
+e=zeros(1,length(c));
+for k=1:length(c)
+    l=int16(c(k));
+    e(k)=G(l+1);
 end
 %reashping transfromed iamge
 f=reshape(e,size(a));
@@ -74,3 +77,14 @@ title('Histogram of Matched Image')
 xlabel('r')
 ylabel('p(r)')
 exportgraphics(gcf,'MatchedHist.png','Resolution',300)
+
+%Plot for part 3 problem 3.7
+%numbers coluated for size of image
+BinVals=[1/4 1/6 1/12 1/12 1/12 1/12 1/6 1/12]; 
+PixVals=[0 16 32 127 191 228 240 255]; %pixel values
+figure
+bar(PixVals,BinVals)%hisgrogram of image
+title('3.7 Histogram')
+xlabel('r')
+ylabel('p(r)')
+exportgraphics(gcf,'37Hist.png','Resolution',300)
