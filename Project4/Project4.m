@@ -34,7 +34,20 @@ axis off image
 title('Drops Low Pass')
 exportgraphics(gcf,'DropsLowPass.png','Resolution',300)
 
-circhigh=cast(R<length(Drops)/4,'double');
+NormFilter=ones(3); %memory allocation
+NormFilter=1/sum(NormFilter,'all').*NormFilter;%making normalization kernal
+
+PadNorm=padarray(NormFilter,[(length(Drops)-1)/2 (length(Drops)-1)/2],0);
+FPadNorm=fft2(PadNorm);
+figure
+imagesc(abs(fftshift(FPadNorm)))
+colormap('gray')
+title('Fourier Transform of Uniform Filter')
+colormap('gray')
+exportgraphics(gcf,'FUniform.png','Resolution',300)
+
+
+circhigh=cast(R>length(Drops)/4,'double');
 figure
 imagesc(circhigh)
 colormap('gray')
@@ -50,3 +63,22 @@ colormap('gray')
 axis off image
 title('Drops High Pass')
 exportgraphics(gcf,'DropsHighPass.png','Resolution',300)
+
+sobx=[1 0 -1;2 0 -2;1 0 -1]; %Creating Sobel opperator
+PadSobx=padarray(sobx,[(length(Drops)-1)/2 (length(Drops)-1)/2],0);
+FSobx=fft2(PadSobx);
+figure
+imagesc(abs(fftshift(FSobx)));
+title('Fourier Transform of Sobel X Filter')
+colormap('gray')
+exportgraphics(gcf,'FSobx.png','Resolution',300)
+
+soby=sobx'; %Creating Sobel opperator
+PadSoby=padarray(soby,[(length(Drops)-1)/2 (length(Drops)-1)/2],0);
+FSoby=fft2(PadSoby);
+figure
+imagesc(abs(fftshift(FSoby)));
+title('Fourier Transform of Sobel Y Filter')
+colormap('gray')
+exportgraphics(gcf,'FSoby.png','Resolution',300)
+
