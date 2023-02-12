@@ -70,6 +70,7 @@ FSobx=fft2(PadSobx);
 figure
 imagesc(abs(fftshift(FSobx)));
 title('Fourier Transform of Sobel X Filter')
+axis off image
 colormap('gray')
 exportgraphics(gcf,'FSobx.png','Resolution',300)
 
@@ -80,5 +81,6 @@ figure
 imagesc(abs(fftshift(FSoby)));
 title('Fourier Transform of Sobel Y Filter')
 colormap('gray')
+axis off image
 exportgraphics(gcf,'FSoby.png','Resolution',300)
 
