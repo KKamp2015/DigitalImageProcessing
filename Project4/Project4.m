@@ -44,6 +44,7 @@ imagesc(abs(fftshift(FPadNorm)))
 colormap('gray')
 title('Fourier Transform of Uniform Filter')
 colormap('gray')
+axis off image
 exportgraphics(gcf,'FUniform.png','Resolution',300)
 
 
@@ -51,7 +52,7 @@ circhigh=cast(R>length(Drops)/4,'double');
 figure
 imagesc(circhigh)
 colormap('gray')
-axis off image
+axis image
 title('High Pass Circle')
 exportgraphics(gcf,'HighPassMask.png','Resolution',300)
 FDropsHigh=fftshift(FDrops).*circhigh;
