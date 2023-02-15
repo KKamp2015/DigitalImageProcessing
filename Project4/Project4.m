@@ -52,7 +52,8 @@ circhigh=cast(R>length(Drops)/4,'double');
 figure
 imagesc(circhigh)
 colormap('gray')
-axis image
+axis image off
+box on
 title('High Pass Circle')
 exportgraphics(gcf,'HighPassMask.png','Resolution',300)
 FDropsHigh=fftshift(FDrops).*circhigh;
