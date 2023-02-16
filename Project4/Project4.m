@@ -63,26 +63,20 @@ figure
 imagesc(DropsHigh)
 colormap('gray')
 axis off image
+box on
 title('Drops High Pass')
 exportgraphics(gcf,'DropsHighPass.png','Resolution',300)
 
 sobx=[1 0 -1;2 0 -2;1 0 -1]; %Creating Sobel opperator
 PadSobx=padarray(sobx,[(length(Drops)-1)/2 (length(Drops)-1)/2],0);
 FSobx=fft2(PadSobx);
-figure
-imagesc(abs(fftshift(FSobx)));
-title('Fourier Transform of Sobel X Filter')
-axis off image
-colormap('gray')
-exportgraphics(gcf,'FSobx.png','Resolution',300)
-
 soby=sobx'; %Creating Sobel opperator
 PadSoby=padarray(soby,[(length(Drops)-1)/2 (length(Drops)-1)/2],0);
 FSoby=fft2(PadSoby);
 figure
-imagesc(abs(fftshift(FSoby)));
-title('Fourier Transform of Sobel Y Filter')
+imagesc(abs(fftshift(FSoby))+abs(fftshift(FSobx)));
+title('Fourier Transform of Sobel Edge Detectors')
 colormap('gray')
 axis off image
-exportgraphics(gcf,'FSoby.png','Resolution',300)
+exportgraphics(gcf,'FSobel.png','Resolution',300)
 
