@@ -1,13 +1,14 @@
 %Housekeeping commands
 clear all
 close all
-Drops=imread('Drops.jpeg'); %reading in image
+Drops=imread('City.jpeg'); %reading in image
 Drops=im2gray(Drops); %converting to grayscale
 figure
 imagesc(Drops)
 axis off image
 colormap('gray')
 noise=uint8(floor(randn(length(Drops)).*10)); %making noise array
+nvar=var(cast(noise,'double'),0,'all');
 NDrops=Drops+noise;
 [M,N]=size(Drops);
 NewImage=zeros([M,N]);
@@ -21,17 +22,8 @@ for j=2:M-2
         AMean(i,j)=mean(NDrops(i-1:i+1,j-1:j+1),'all');
         Gmean(i,j)=geomean(cast(NDrops(i-1:i+1,j-1:j+1),'double'),'all');
         Midpoint(i,j)=median(NDrops(i-1:i+1,j-1:j+1),'all');
-        Adapt(i,j)=AdaptFilter(NDrops(i-1:i+1,j-1:j+1));
-        Zout=-99;
-        w=0;
-        while Zout==-99
-            li=i-(1+w);
-            hi=i+(1+w);
-            lj=j-(1+w);
-            hj=j+(1+w);
-            Zout=AdaptMedFilter(NDrops(li:hi,lj:hj));
-            w=w+1;
-        end
+        Adapt(i,j)=AdaptFilter(NDrops(i-1:i+1,j-1:j+1),nvar);
+        Zout=AdaptMedFilter(NDrops(i-1:i+1,j-1:j+1));
         AdaptMed(i,j)=Zout;
     end
 end
@@ -41,30 +33,35 @@ imagesc(AMean)
 title({'Arithmetic Mean', 'MSE:'+string(MSE)})
 axis off image
 colormap('gray')
+exportgraphics(gcf,'AMean.png','Resolution',300)
 figure
 image(Gmean)
 MSE=immse(cast(Drops,'double'),Gmean);
 title({'Geometric Mean', 'MSE:'+string(MSE)})
 axis off image
 colormap('gray')
+exportgraphics(gcf,'GMean.png','Resolution',300)
 figure
 MSE=immse(cast(Drops,'double'),Midpoint);
 image(Midpoint)
 title({'Midpoint Filter', 'MSE:'+string(MSE)})
 axis off image
 colormap('gray')
+exportgraphics(gcf,'MidPoint.png','Resolution',300)
 figure
 MSE=immse(cast(Drops,'double'),Adapt);
 imagesc(Adapt)
 title({'Adaptive Filter', 'MSE:'+string(MSE)})
 axis off image
 colormap('gray')
+exportgraphics(gcf,'Adapt.png','Resolution',300)
 figure
 MSE=immse(cast(Drops,'double'),AdaptMed);
 imagesc(AdaptMed)
 title({'Adaptive Medial Filter', 'MSE:'+string(MSE)})
 axis off image
 colormap('gray')
+exportgraphics(gcf,'AdaptMed.png','Resolution',300)
 
 function A=AdaptMedFilter(X)
     zmin=min(X,[],'all');
