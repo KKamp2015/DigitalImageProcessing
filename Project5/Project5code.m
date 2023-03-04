@@ -10,6 +10,12 @@ colormap('gray')
 noise=uint8(floor(randn(length(Drops)).*10)); %making noise array
 nvar=var(cast(noise,'double'),0,'all');
 NDrops=Drops+noise;
+figure
+imagesc(NDrops)
+title('Noisy Image')
+axis off image
+colormap('gray')
+exportgraphics(gcf,'Noisy.png','Resolution',300)
 [M,N]=size(Drops);
 NewImage=zeros([M,N]);
 AMean=NewImage;
@@ -62,6 +68,13 @@ title({'Adaptive Medial Filter', 'MSE:'+string(MSE)})
 axis off image
 colormap('gray')
 exportgraphics(gcf,'AdaptMed.png','Resolution',300)
+
+function A=AdaptFilter(X,eta)
+    ml=mean(X,'all');
+    L=var(cast(X,'double'),0,"all");
+    g=X(ceil(length(X)/2),ceil(length(X)/2));
+    A=g-((eta/L)*(g-ml));
+end
 
 function A=AdaptMedFilter(X)
     zmin=min(X,[],'all');
