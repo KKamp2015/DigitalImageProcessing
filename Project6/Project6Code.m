@@ -16,9 +16,19 @@ Rlines=radon(Nlines,1:179);
 figure
 imagesc(Rlines)
 colormap('gray')
-title('Radon of City')
+title('Radon of Lines')
 
-city=imread("City.jpeg");
+Recon=max(Rlines,[],'all')*0.75<Rlines;
+BRlines=Rlines.*Recon;
+LinesRecon=iradon(BRlines,1:179);
+figure
+imagesc(LinesRecon)
+colormap('gray')
+axis off image
+title('Lines recontruction with 75% max Radon')
+%exportgraphics(gcf,'ReconLines.png','Resolution',300)
+
+city=imread("roadway.jpg");
 city=im2gray(city);
 Ncity=city;
 figure
@@ -33,3 +43,17 @@ figure
 imagesc(Rcity)
 colormap('gray')
 title('Radon of City')
+%exportgraphics(gcf,'ReconLines.png','Resolution',300)
+figure
+hold on
+imagesc(Ncity)
+colormap('gray')
+axis off image
+
+CityMax=max(Rcity,[],'all')==Rcity;
+BRcity=CityMax;
+CityRecon=iradon(BRcity,1:179);
+[X,Y,~]=find(CityRecon>0);
+plot(X,Y)
+axis off image
+title('City recontruction with 75% max Radon')
