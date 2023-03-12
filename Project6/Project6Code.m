@@ -28,9 +28,10 @@ axis off image
 title('Lines recontruction with 75% max Radon')
 %exportgraphics(gcf,'ReconLines.png','Resolution',300)
 
-city=imread("roadway.jpg");
+city=imread("RoadwaySQ.jpg");
 city=im2gray(city);
 Ncity=city;
+s=size(Ncity);
 figure
 imagesc(Ncity)
 colormap('gray')
@@ -47,13 +48,13 @@ title('Radon of City')
 figure
 hold on
 imagesc(Ncity)
+set(gca,'YDir','reverse')
 colormap('gray')
 axis off image
-
 CityMax=max(Rcity,[],'all')==Rcity;
 BRcity=CityMax;
 CityRecon=iradon(BRcity,1:179);
 [X,Y,~]=find(CityRecon>0);
-plot(X,Y)
-axis off image
-title('City recontruction with 75% max Radon')
+plot(Y,X,LineWidth=2,color='red')
+title('Overplot of Prominent line')
+exportgraphics(gcf,'LineOverplot.png','Resolution',300)
