@@ -1,32 +1,33 @@
 %Housekeeping commands
 clear all
 close all
-
+wav='beyl';
 Bridges=imread('Bridges.jpeg'); %Reading in input
 Bridges=cast(im2gray(Bridges),'double'); %converting to graycale
-noise=cast(floor(randn(size(Bridges)).*30),'double'); %creating noise
-NosiyBridge=Bridges+noise; %adding noise
+noise=cast(floor(randn(size(Bridges)).*20),'double'); %creating noise
+NoisyBridge=Bridges+noise; %adding noise
 
 figure
-imagesc(NosiyBridge)
+imagesc(NoisyBridge)
 colormap("gray")
 title('Noisy Image')
 axis off image
 
-[C,L]=wavedec2(NosiyBridge,1,'db4');
+[C,L]=wavedec2(NoisyBridge,1,wav);
 
-Ct=Thresh(C,20);
-BridgeOut=waverec2(Ct,L,'db4');
+Ct=Thresh(C,30);
 
-% [H1,V1,D1]=detcoef2('all',C,L,1);
-% A=appcoef2(C,L,'beyl',1);
+BridgeOut=waverec2(Ct,L,wav);
+
+% [s]=detcoef2('all',C,L,1);
+% A=appcoef2(C,L,wav,1);
 % 
-% H1t=Thresh(H1,10);
-% V1t=Thresh(V1,10);
-% D1t=Thresh(D1,10);
-% At=Thresh(A,10);
+% H1t=Thresh(H1,300);
+% V1t=Thresh(V1,300);
+% D1t=Thresh(D1,300);
+% At=Thresh(A,300);
 % 
-% BridgeOut=idwt2(A,H1,V1,D1,'db4');
+% BridgeOut=idwt2(A,H1,V1,D1,wav);
 
 figure
 imagesc(BridgeOut)
@@ -38,9 +39,11 @@ title('Denoised')
 
 
 function T=Thresh(A,t)
-    [x,y,~]=find(abs(A)<=t);
-    A(x,y)=0;
-    T=A;
+   s=sign(A);
+   B=abs(A)-t;
+   [x,y,~]=find(B<0);
+   B(x,y)=0;
+   T=B.*s;
 end
 
 %NoiseSample=Bridges(1:117,330:512);
