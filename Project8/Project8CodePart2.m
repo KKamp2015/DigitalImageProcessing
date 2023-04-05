@@ -7,7 +7,6 @@ Bayes('beyl',30)
 Bayes('beyl',40)
 
 function Bayes(wav,s)
-    disp(s)
     blankreigion=[0.0013 0.1523;0.6445 1]; %array for ratio of blank region
     
     Bridges=imread('Bridges.jpeg'); %Reading in input
@@ -32,7 +31,6 @@ function Bayes(wav,s)
     sh=std2(H1(loc(1,1):loc(1,2),loc(2,1):loc(2,2)));
     sv=std2(V1(loc(1,1):loc(1,2),loc(2,1):loc(2,2)));
     sd=std2(D1(loc(1,1):loc(1,2),loc(2,1):loc(2,2)));
-    disp([sh^2/s,sv^2/s,sd^2/s])
     H1t=Thresh(H1,sh^2 /s);
     V1t=Thresh(V1,sv^2 /s);
     D1t=Thresh(D1,sd^2 /s);
