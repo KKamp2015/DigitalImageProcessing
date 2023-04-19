@@ -1,6 +1,6 @@
 %Housekeeping commands
-%clear all
-%close all
+clear all
+close all
 
 Cells=imread('Cells.tif');
 Cells=im2gray(Cells);
@@ -32,4 +32,6 @@ figure
 imagesc(CellsTresh)
 axis off image
 colormap('gray')
+title("Otsu's Algorithm Output")
+exportgraphics(gcf,'Otsu.png','Resolution',300)
 
