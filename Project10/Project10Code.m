@@ -17,7 +17,7 @@ M1=zeros([1,255]);
 M2=zeros([1,255]);
 for i = minval:maxval
     P1(i)=sum(histnorm(1:i),"all");
-    t=Cells<i;
+    t=Cells<=i;
     M1(i)=mean(Cells(t));
     M2(i)=mean(Cells(~t));
 
